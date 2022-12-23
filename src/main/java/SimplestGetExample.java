@@ -2,17 +2,14 @@
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import model.Employee;
+import entity.User;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -69,12 +66,12 @@ public class SimplestGetExample {
         headers.set("Cookie", cookies.stream().collect(Collectors.joining(";")));
         //  headers.add ("Cookie", String.valueOf(header.get("Set-Cookie")));
 
-        Employee newEmployee = new Employee(3, "James", "Brown", 30);
+        User newUser = new User(3, "James", "Brown", 30);
 
         // Data attached to the request.
         // HttpEntity<Employee> requestBody = new HttpEntity<>(newEmployee, headers);
 
-        HttpEntity<Employee> entity1 = new HttpEntity<>(new Employee(3, "James", "Brown", 30), headers);
+        HttpEntity<User> entity1 = new HttpEntity<>(new User(3, "James", "Brown", 30), headers);
         // Send request with POST method.
         ResponseEntity<String> response2 = restTemplate.exchange(URL_EMPLOYEES, HttpMethod.POST, entity1, String.class);
 
@@ -84,7 +81,7 @@ public class SimplestGetExample {
 
         //  HttpEntity<Employee> requestBody2 = new HttpEntity<>(newEmployee, headers);
 
-        HttpEntity<Employee> entity2 = new HttpEntity<>(new Employee(3, "Thomas", "Shelby", 30), headers);
+        HttpEntity<User> entity2 = new HttpEntity<>(new User(3, "Thomas", "Shelby", 30), headers);
         // Send request with POST method.
         ResponseEntity<String> response3 = restTemplate.exchange(URL_EMPLOYEES, HttpMethod.PUT, entity2, String.class);
 
@@ -94,25 +91,13 @@ public class SimplestGetExample {
 
         //  HttpEntity<Employee> requestBody3 = new HttpEntity<>(newEmployee, headers);
 
-        HttpEntity<Employee> entity3 = new HttpEntity<>(new Employee(3, "Thomas", "Shelby", 30), headers);
+        HttpEntity<User> entity3 = new HttpEntity<>(new User(3, "Thomas", "Shelby", 30), headers);
         // Send request with POST method.
         ResponseEntity<String> response4 = restTemplate.exchange(URL_DELETE, HttpMethod.DELETE, entity3, String.class);
 
 
         System.out.println(response4.getBody());
 
-
-        for (int i = 0; i < 10; i++) {
-            ResponseEntity<String> img = restTemplate.exchange("https://coffee.alexflipnote.dev/random.json", HttpMethod.GET, entity, String.class);
-            String a = img.getBody();
-            String FILE_URL = a.substring(13, a.length() - 3);
-            System.out.println(FILE_URL);
-            String extension = a.substring(a.length() - 7, a.length() - 3);
-
-
-
-            InputStream in = new URL(FILE_URL).openStream();
-            Files.copy(in, Paths.get(FILE_NAME + i + extension), StandardCopyOption.REPLACE_EXISTING);
         }
 
     }
